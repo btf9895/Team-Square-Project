@@ -1,4 +1,6 @@
 import java.util.StringTokenizer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class EdgeField {
    private int numFigure, tableID, tableBound, fieldBound, dataType, varcharValue;
@@ -6,7 +8,8 @@ public class EdgeField {
    private boolean disallowNull, isPrimaryKey;
    private static String[] strDataType = {"Varchar", "Boolean", "Integer", "Double"};
    public static final int VARCHAR_DEFAULT_LENGTH = 1;
-   
+   private static final Logger logger = LogManager.getLogger(EdgeField.class.getName());
+
    public EdgeField(String inputString) {
       StringTokenizer st = new StringTokenizer(inputString, EdgeConvertFileParser.DELIM);
       numFigure = Integer.parseInt(st.nextToken());
@@ -19,6 +22,7 @@ public class EdgeField {
       defaultValue = "";
       varcharValue = VARCHAR_DEFAULT_LENGTH;
       dataType = 0;
+      logger.debug("EdgeField constructed with inputString: " + inputString);
    }
    
    public int getNumFigure() {
@@ -84,6 +88,9 @@ public class EdgeField {
    public void setVarcharValue(int value) {
       if (value > 0) {
          varcharValue = value;
+         logger.info("Set varcharValue to: " + value);
+      } else {
+         logger.warn("Attempted to set varcharValue with a non-positive value: {}", value);
       }
    }
    public int getDataType() {
@@ -93,6 +100,9 @@ public class EdgeField {
    public void setDataType(int value) {
       if (value >= 0 && value < strDataType.length) {
          dataType = value;
+         logger.info("Set dataType to: " + value);
+      } else {
+         logger.error("Attempted to set invalid dataType: {}", value);
       }
    }
    
@@ -101,6 +111,7 @@ public class EdgeField {
    }
    
    public String toString() {
+      logger.debug("Generated string representation for EdgeField: {}", name);
       return numFigure + EdgeConvertFileParser.DELIM +
       name + EdgeConvertFileParser.DELIM +
       tableID + EdgeConvertFileParser.DELIM +
