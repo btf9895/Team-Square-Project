@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class EdgeConvertFileParser {
    //private String filename = "test.edg";
@@ -25,6 +27,7 @@ public class EdgeConvertFileParser {
    public static final String EDGE_ID = "EDGE Diagram File"; //first line of .edg files should be this
    public static final String SAVE_ID = "EdgeConvert Save File"; //first line of save files should be this
    public static final String DELIM = "|";
+   private static final Logger logger = LogManager.getLogger(EdgeConvertFileParser.class);
    
    public EdgeConvertFileParser(File constructorFile) {
       numFigure = 0;
@@ -40,6 +43,7 @@ public class EdgeConvertFileParser {
    }
 
    public void parseEdgeFile() throws IOException {
+      logger.info("Parsing Edge Diagrammer file...");
       while ((currentLine = br.readLine()) != null) {
          currentLine = currentLine.trim();
          if (currentLine.startsWith("Figure ")) { //this is the start of a Figure entry
@@ -68,11 +72,13 @@ public class EdgeConvertFileParser {
                text = currentLine.substring(currentLine.indexOf("\"") + 1, currentLine.lastIndexOf("\"")).replaceAll(" ", ""); //get the Text parameter
                if (text.equals("")) {
                   JOptionPane.showMessageDialog(null, "There are entities or attributes with blank names in this diagram.\nPlease provide names for them and try again.");
+                  logger.warn("There are entities or attributes with blank names in this diagram. Please provide names for them and try again.");
                   EdgeConvertGUI.setReadSuccess(false);
                   break;
                }
                int escape = text.indexOf("\\");
                if (escape > 0) { //Edge denotes a line break as "\line", disregard anything after a backslash
+                  logger.warn("A line break is denoted using a backslash '\\'. Disregarding anything after the backslash.");
                   text = text.substring(0, escape);
                }
 
@@ -126,6 +132,7 @@ public class EdgeConvertFileParser {
             alConnectors.add(new EdgeConnector(numConnector + DELIM + endPoint1 + DELIM + endPoint2 + DELIM + endStyle1 + DELIM + endStyle2));
          } // if("Connector")
       } // while()
+      logger.debug("Finished parsing Edge Diagrammer file.");
    } // parseEdgeFile()
    
    private void resolveConnectors() { //Identify nature of Connector endpoints
@@ -192,6 +199,7 @@ public class EdgeConvertFileParser {
    } // resolveConnectors()
    
    public void parseSaveFile() throws IOException { //this method is unclear and confusing in places
+      logger.info("Parsing Save file...");
       StringTokenizer stTables, stNatFields, stRelFields, stNatRelFields, stField;
       EdgeTable tempTable;
       EdgeField tempField;
@@ -249,6 +257,7 @@ public class EdgeConvertFileParser {
          }
          alFields.add(tempField);
       }
+      logger.debug("Finished parsing Save file.");
    } // parseSaveFile()
 
    private void makeArrays() { //convert ArrayList objects into arrays of the appropriate Class type
@@ -280,7 +289,7 @@ public class EdgeConvertFileParser {
    public EdgeField[] getEdgeFields() {
       return fields;
    }
-   
+
    public void openFile(File inputFile) {
       try {
          fr = new FileReader(inputFile);
@@ -305,10 +314,12 @@ public class EdgeConvertFileParser {
       } // try
       catch (FileNotFoundException fnfe) {
          System.out.println("Cannot find \"" + inputFile.getName() + "\".");
+         logger.error("An error occurred while processing the file: " + fnfe.getMessage(), fnfe);
          System.exit(0);
       } // catch FileNotFoundException
       catch (IOException ioe) {
          System.out.println(ioe);
+         logger.error("An error occurred while processing the file: " + ioe.getMessage(), ioe);
          System.exit(0);
       } // catch IOException
    } // openFile()
