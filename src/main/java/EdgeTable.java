@@ -1,17 +1,20 @@
 import java.util.*;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 public class EdgeTable {
    private int numFigure;
    private String name;
    private ArrayList alRelatedTables, alNativeFields;
    private int[] relatedTables, relatedFields, nativeFields;
-   
+   private static final Logger logger = LogManager.getLogger(EdgeTable.class);
+
    public EdgeTable(String inputString) {
       StringTokenizer st = new StringTokenizer(inputString, EdgeConvertFileParser.DELIM);
       numFigure = Integer.parseInt(st.nextToken());
       name = st.nextToken();
       alRelatedTables = new ArrayList();
       alNativeFields = new ArrayList();
+      logger.debug("EdgeTable constructed with inputString: " + inputString);
    }
    
    public int getNumFigure() {
@@ -24,6 +27,7 @@ public class EdgeTable {
    
    public void addRelatedTable(int relatedTable) {
       alRelatedTables.add(new Integer(relatedTable));
+      logger.info("Added relatedTable with ID: " + relatedTable);
    }
    
    public int[] getRelatedTablesArray() {
@@ -48,6 +52,7 @@ public class EdgeTable {
 
    public void moveFieldUp(int index) { //move the field closer to the beginning of the list
       if (index == 0) {
+         logger.warn("Attempted to move the field up at index 0");
          return;
       }
       int tempNative = nativeFields[index - 1]; //save element at destination index
@@ -60,6 +65,7 @@ public class EdgeTable {
    
    public void moveFieldDown(int index) { //move the field closer to the end of the list
       if (index == (nativeFields.length - 1)) {
+         logger.warn("Attempted to move the field down at last index");
          return;
       }
       int tempNative = nativeFields[index + 1]; //save element at destination index
@@ -88,6 +94,12 @@ public class EdgeTable {
       for (int i = 0; i < relatedFields.length; i++) {
          relatedFields[i] = 0;
       }
+
+      if (nativeFields.length == 0) {
+         logger.error("Native fields array is empty after conversion.");
+      }
+
+      logger.info("Converted ArrayLists to int arrays");
    }
 
    public String toString() {
@@ -117,7 +129,7 @@ public class EdgeTable {
          }
       }
       sb.append("\r\n}\r\n");
-      
+      logger.info("Generated string representation for EdgeTable: " + name);
       return sb.toString();
    }
 }
