@@ -5,7 +5,12 @@ import javax.swing.event.*;
 import java.io.*;
 import java.util.*;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public abstract class EdgeConvertCreateDDL {
+   private static Logger logger = LogManager.getLogger(EdgeConvertCreateDDL.class.getName());
+
    static String[] products = {"MySQL"};
    protected EdgeTable[] tables; //master copy of EdgeTable objects
    protected EdgeField[] fields; //master copy of EdgeField objects
@@ -17,6 +22,7 @@ public abstract class EdgeConvertCreateDDL {
    public EdgeConvertCreateDDL(EdgeTable[] tables, EdgeField[] fields) {
       this.tables = tables;
       this.fields = fields;
+      logger.trace("Fields and tables: {} and {}", fields.toString(), tables.toString());
       initialize();
    } //EdgeConvertCreateDDL(EdgeTable[], EdgeField[])
    
@@ -32,6 +38,7 @@ public abstract class EdgeConvertCreateDDL {
       for (int i = 0; i < tables.length; i++) { //step through list of tables
          int numBound = 0; //initialize counter for number of bound tables
          int[] relatedFields = tables[i].getRelatedFieldsArray();
+         logger.debug("Table: {}, relatedFields: {}", tables[i].toString(), relatedFields.toString());
          for (int j = 0; j < relatedFields.length; j++) { //step through related fields list
             if (relatedFields[j] != 0) {
                numBound++; //count the number of non-zero related fields
@@ -47,6 +54,7 @@ public abstract class EdgeConvertCreateDDL {
    protected EdgeTable getTable(int numFigure) {
       for (int tIndex = 0; tIndex < tables.length; tIndex++) {
          if (numFigure == tables[tIndex].getNumFigure()) {
+            logger.debug("Found table: {}", tables[tIndex].toString());
             return tables[tIndex];
          }
       }
@@ -56,6 +64,7 @@ public abstract class EdgeConvertCreateDDL {
    protected EdgeField getField(int numFigure) {
       for (int fIndex = 0; fIndex < fields.length; fIndex++) {
          if (numFigure == fields[fIndex].getNumFigure()) {
+            logger.debug("Found field: {}", fields[fIndex].toString());
             return fields[fIndex];
          }
       }
