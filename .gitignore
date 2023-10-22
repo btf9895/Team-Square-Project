@@ -29,3 +29,9 @@ nohup.out
 .cache/
 .replit
 replit.nix
+
+# VSCode files
+.vscode/
+launch.json
+settings.json
+*.code-workspace
