@@ -5,7 +5,11 @@ import javax.swing.event.*;
 import java.io.*;
 import java.util.*;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class CreateDDLMySQL extends EdgeConvertCreateDDL {
+   private static Logger logger = LogManager.getLogger(CreateDDLMySQL.class.getName());
 
    protected String databaseName;
    //this array is for determining how MySQL refers to datatypes
@@ -26,13 +30,18 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
       databaseName = generateDatabaseName();
       sb.append("CREATE DATABASE " + databaseName + ";\r\n");
       sb.append("USE " + databaseName + ";\r\n");
+
+		logger.debug("Database connection queries: ", sb);
+
       for (int boundCount = 0; boundCount <= maxBound; boundCount++) { //process tables in order from least dependent (least number of bound tables) to most dependent
          for (int tableCount = 0; tableCount < numBoundTables.length; tableCount++) { //step through list of tables
-            if (numBoundTables[tableCount] == boundCount) { //
+            logger.trace("Building tables.. ", "Bound count: " + boundCount, "Table count: " + tableCount);
+            if (numBoundTables[tableCount] == boundCount) { 
                sb.append("CREATE TABLE " + tables[tableCount].getName() + " (\r\n");
                int[] nativeFields = tables[tableCount].getNativeFieldsArray();
                int[] relatedFields = tables[tableCount].getRelatedFieldsArray();
                boolean[] primaryKey = new boolean[nativeFields.length];
+               logger.info("Table variables: ", "Native fields: " + nativeFields.toString(), "Related fields: " + relatedFields.toString(), "Primary key: " + primaryKey.toString());
                int numPrimaryKey = 0;
                int numForeignKey = 0;
                for (int nativeFieldCount = 0; nativeFieldCount < nativeFields.length; nativeFieldCount++) { //print out the fields
@@ -61,6 +70,7 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
                      numForeignKey++;
                   }
                   sb.append(",\r\n"); //end of field
+                  logger.trace("Adding field: {}", sb);
                }
                if (numPrimaryKey > 0) { //table has primary key(s)
                   sb.append("CONSTRAINT " + tables[tableCount].getName() + "_PK PRIMARY KEY (");
@@ -78,6 +88,7 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
                      sb.append(",");
                   }
                   sb.append("\r\n");
+                  logger.trace("Adding primary key: {}", sb);
                }
                if (numForeignKey > 0) { //table has foreign keys
                   int currentFK = 1;
@@ -90,17 +101,22 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
                            sb.append(",\r\n");
                         }
                         currentFK++;
+                        logger.trace("Adding foreign key: {}", sb);
                      }
                   }
                   sb.append("\r\n");
                }
                sb.append(");\r\n\r\n"); //end of table
             }
+            logger.debug("Finished database creation string: ", sb.toString());
          }
       }
    }
 
    protected int convertStrBooleanToInt(String input) { //MySQL uses '1' and '0' for boolean types
+      if (!(input.toLowerCase().equals("true") || input.toLowerCase().equals("false"))) {
+         logger.error("Invalid value for boolean variable: ", input);
+      }
       if (input.equals("true")) {
          return 1;
       } else {
@@ -121,6 +137,7 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
                        null,
                        null,
                        dbNameDefault);
+         
          if (databaseName == null) {
             EdgeConvertGUI.setReadSuccess(false);
             return "";
@@ -129,10 +146,12 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
             JOptionPane.showMessageDialog(null, "You must select a name for your database.");
          }
       } while (databaseName.equals(""));
+      logger.info("Inputted database name: ", databaseName);
       return databaseName;
    }
    
    public String getDatabaseName() {
+      logger.info("Database name: ", databaseName);
       return databaseName;
    }
    
@@ -141,6 +160,7 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
    }
 
    public String getSQLString() {
+      logger.info("SB: ", sb.toString());
       createDDL();
       return sb.toString();
    }
