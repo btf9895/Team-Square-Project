@@ -12,7 +12,7 @@ import java.lang.reflect.*;
 
 public class EdgeConvertGUI {
 
-   private static Logger logger = LogManager.getLogger(RunEdgeConvert.class.getName());
+   private static Logger logger = LogManager.getLogger(EdgeConvertGUI.class.getName());
 
    public static final int HORIZ_SIZE = 635;
    public static final int VERT_SIZE = 400;
