@@ -41,7 +41,7 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
                int[] nativeFields = tables[tableCount].getNativeFieldsArray();
                int[] relatedFields = tables[tableCount].getRelatedFieldsArray();
                boolean[] primaryKey = new boolean[nativeFields.length];
-               logger.info("Table variables: ", "Native fields: " + nativeFields.toString(), "Related fields: " + relatedFields.toString(), "Primary key: " + primaryKey.toString());
+               logger.warn("Table variables: ", "Native fields: " + nativeFields.toString(), "Related fields: " + relatedFields.toString(), "Primary key: " + primaryKey.toString());
                int numPrimaryKey = 0;
                int numForeignKey = 0;
                for (int nativeFieldCount = 0; nativeFieldCount < nativeFields.length; nativeFieldCount++) { //print out the fields
