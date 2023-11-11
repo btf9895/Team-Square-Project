@@ -10,14 +10,12 @@ public class CreateDDLMySQLTest {
     
     private static EdgeTable[] tables;
     private static EdgeField[] fields;
-
     private static CreateDDLMySQL coursesDDL;
-    private static CreateDDLMySQL emptyDDL;
-    private static CreateDDLMySQL verboseDDL;
+    private static Dictionary<String, Integer> dataTypes;
 
     @BeforeClass
     public static void setUpTables() throws Exception {
-        Dictionary<String, Integer> dataTypes = new Hashtable<>();
+        dataTypes = new Hashtable<>();
         dataTypes.put("Varchar", 1);
         dataTypes.put("Boolean", 2);
         dataTypes.put("Integer", 3);
@@ -76,34 +74,7 @@ public class CreateDDLMySQLTest {
         fields = new EdgeField[]{gradeField, courseNameField, courseNumberField, facSSNField, studentSSNField, studentNameField, facultyNameField};
 
         coursesDDL = new CreateDDLMySQL(tables, fields);
-        emptyDDL = new CreateDDLMySQL(new EdgeTable[0], new EdgeField[0]);
-
-        EdgeTable table1 = new EdgeTable("1|table1");
-
-        EdgeField pk = new EdgeField("2|primary_key");
-
-        EdgeField nn = new EdgeField("3|non_null");
-        nn.setDataType(dataTypes.get("Varchar"));
-
-        EdgeField dv = new EdgeField("4}|default_value");
-        dv.setDataType(dataTypes.get("Varchar"));
-        dv.setDefaultValue("Example Default Value");
-
-        EdgeTable table2 = new EdgeTable("99|table2");
-
-        verboseDDL = new CreateDDLMySQL(new EdgeTable[]{table1, table2}, new EdgeField[]{});
     }
-
-    // @Test
-    // public void testDDL() {
-    //     for (int i = 0; i < fields.length; i++) {
-    //         System.out.println(fields[i].toString());
-    //     }
-    //     for (int i = 0; i < tables.length; i++) {
-    //         System.out.println(tables[i].toString());
-    //     }
-        // System.out.println(verboseDDL.getSQLString("courses"));
-    // }
 
     @Test
     public void testObjectInstantiation() {
@@ -112,23 +83,119 @@ public class CreateDDLMySQLTest {
 
     @Test
     public void testValidCreateAndUseDatabaseClause() {
-        String output = emptyDDL.getSQLString("test_db");
-        assertTrue("Create and use clause generated correctly", output.contains("CREATE DATABASE test_db") && output.contains("USE test_db"));
+        CreateDDLMySQL ddl = new CreateDDLMySQL(new EdgeTable[0], new EdgeField[0]);
+        String output = ddl.getSQLString("test_db");
+        assertTrue("Create and use clause generated correctly", 
+            output.contains("CREATE DATABASE test_db") && output.contains("USE test_db"));
     }
 
     @Test
     public void testInvalidCreateAndUseDatabaseClause() {
-        String output = emptyDDL.getSQLString("correct_db");
-        assertFalse("Create and use clause generated incorrectly", output.contains("CREATE DATABASE wrong_db") || output.contains("USE wrong_db"));
+        CreateDDLMySQL ddl = new CreateDDLMySQL(new EdgeTable[0], new EdgeField[0]);
+        String output = ddl.getSQLString("correct_db");
+        assertFalse("Create and use clause generated incorrectly", 
+            output.contains("CREATE DATABASE wrong_db") || output.contains("USE wrong_db"));
+    }
+
+    @Test
+    public void testVariableTypes() {
+        EdgeTable[] tables = new EdgeTable[]{new EdgeTable("1|table")};
+        EdgeField[] fields = new EdgeField[]{
+            new EdgeField("2|varchar_field"),
+            new EdgeField("3|boolean_field"),
+            new EdgeField("4|integer_field"),
+            new EdgeField("5|double_field"),
+        };
+        fields[0].setTableBound(1);
+        fields[0].setDataType(0);
+        fields[1].setTableBound(1);
+        fields[1].setDataType(1);
+        fields[2].setTableBound(1);
+        fields[2].setDataType(2);
+        fields[3].setTableBound(1);
+        fields[3].setDataType(3);
+        tables[0].addNativeField(2);
+        tables[0].addNativeField(3);
+        tables[0].addNativeField(4);
+        tables[0].addNativeField(5);
+        tables[0].makeArrays();
+        CreateDDLMySQL ddl = new CreateDDLMySQL(tables, fields);
+        String output = ddl.getSQLString("test");
+        assertTrue("Data types are correctly identified", 
+            output.contains("varchar_field VARCHAR") &&
+            output.contains("boolean_field BOOL") &&
+            output.contains("integer_field INT") &&
+            output.contains("double_field DOUBLE"));
+    }
+
+    @Test
+    public void testValidVarcharLengthConstraint() {
+        EdgeTable[] tables = new EdgeTable[]{new EdgeTable("1|table")};
+        EdgeField[] fields = new EdgeField[]{new EdgeField("2|varchar_field")};
+        fields[0].setTableBound(1);
+        fields[0].setVarcharValue(20);
+        tables[0].addNativeField(2);
+        tables[0].makeArrays();
+        CreateDDLMySQL ddl = new CreateDDLMySQL(tables, fields);
+        String output = ddl.getSQLString("test");
+        assertTrue("Primary key clause generated correctly", 
+            output.contains("varchar_field VARCHAR(20)"));
+    }
+
+    @Test
+    public void testInvalidVarcharLengthConstraint() {
+        EdgeTable[] tables = new EdgeTable[]{new EdgeTable("1|table")};
+        EdgeField[] fields = new EdgeField[]{new EdgeField("2|varchar_field")};
+        fields[0].setTableBound(1);
+        fields[0].setVarcharValue(99);
+        tables[0].addNativeField(2);
+        tables[0].makeArrays();
+        CreateDDLMySQL ddl = new CreateDDLMySQL(tables, fields);
+        String output = ddl.getSQLString("test");
+        assertFalse("Primary key clause generated correctly", 
+            output.contains("varchar_field VARCHAR(20)"));
     }
 
     @Test
     public void testPrimaryKeyClause() {
-        EdgeTable table = new EdgeTable("1|table1");
-        EdgeField pk = new EdgeField("2|primary_key");
-        pk.setTableBound(1);
-        table.makeArrays();
-        // assertTrue("Create clause generated correctly", )
+        EdgeTable[] tables = new EdgeTable[]{new EdgeTable("1|table")};
+        EdgeField[] fields = new EdgeField[]{new EdgeField("2|primary_key")};
+        fields[0].setTableBound(1);
+        fields[0].setIsPrimaryKey(true);
+        tables[0].addNativeField(2);
+        tables[0].makeArrays();
+        CreateDDLMySQL ddl = new CreateDDLMySQL(tables, fields);
+        String output = ddl.getSQLString("test");
+        assertTrue("Primary key clause generated correctly", 
+            output.contains("PRIMARY KEY (primary_key)"));
+    }
+
+    @Test
+    public void testNonNullClause() {
+        EdgeTable[] tables = new EdgeTable[]{new EdgeTable("1|table")};
+        EdgeField[] fields = new EdgeField[]{new EdgeField("2|non_null_field")};
+        fields[0].setTableBound(1);
+        fields[0].setDisallowNull(true);
+        tables[0].addNativeField(2);
+        tables[0].makeArrays();
+        CreateDDLMySQL ddl = new CreateDDLMySQL(tables, fields);
+        String output = ddl.getSQLString("test");
+        assertTrue("Non null clause generated correctly", 
+            output.contains("non_null_field") && output.contains("NOT NULL"));
+    }
+
+    @Test
+    public void testDefaultValueClause() {
+        EdgeTable[] tables = new EdgeTable[]{new EdgeTable("1|table")};
+        EdgeField[] fields = new EdgeField[]{new EdgeField("2|default_value_field")};
+        fields[0].setTableBound(1);
+        fields[0].setDefaultValue("A default value");
+        tables[0].addNativeField(2);
+        tables[0].makeArrays();
+        CreateDDLMySQL ddl = new CreateDDLMySQL(tables, fields);
+        String output = ddl.getSQLString("test");
+        assertTrue("Default value clause generated correctly", 
+            output.contains("default_value_field") && output.contains("DEFAULT A default value"));
     }
 
 }
