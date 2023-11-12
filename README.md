@@ -3,15 +3,21 @@
 ## Repository Link
 
 ###### [Team-Square-Project](https://github.com/btf9895/Team-Square-Project)
+
 ---
+
 ## Classes Tested
 
 CreateDDLMySQL - Ben
+
 ---
+
 ## Compile and Run Instructions
 
 (...)
+
 ---
+
 ## Test Plan
 
 ###### CreateDDLMySQL:
