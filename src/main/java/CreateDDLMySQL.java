@@ -42,11 +42,22 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
                int[] nativeFields = tables[tableCount].getNativeFieldsArray();
                int[] relatedFields = tables[tableCount].getRelatedFieldsArray();
                boolean[] primaryKey = new boolean[nativeFields.length];
-               logger.warn("Table variables: ", "Native fields: " + nativeFields.toString(), "Related fields: " + relatedFields.toString(), "Primary key: " + primaryKey.toString());
+
+               String s = "\tNative fields: ";
+               for (int nativeFieldCount = 0; nativeFieldCount < nativeFields.length; nativeFieldCount++) { //print out the fields
+                  s += nativeFields[nativeFieldCount] + ", ";
+               }
+               s += "\tRelated fields: ";
+               for (int relatedFieldCount = 0; relatedFieldCount < relatedFields.length; relatedFieldCount++) { //print out the fields
+                  s += relatedFields[relatedFieldCount] + ", ";
+               }
+               logger.warn("Table variables: " + s);
+               
                int numPrimaryKey = 0;
                int numForeignKey = 0;
                for (int nativeFieldCount = 0; nativeFieldCount < nativeFields.length; nativeFieldCount++) { //print out the fields
                   EdgeField currentField = getField(nativeFields[nativeFieldCount]);
+                  logger.warn("Current field: ", currentField.toString());
                   sb.append("\t" + currentField.getName() + " " + strDataType[currentField.getDataType()]);
                   if (currentField.getDataType() == 0) { //varchar
                      sb.append("(" + currentField.getVarcharValue() + ")"); //append varchar length in () if data type is varchar
