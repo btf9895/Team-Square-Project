@@ -87,6 +87,51 @@ public class CreateDDLMySQLTest {
     }
 
     @Test
+    public void testValidConvertStrBooleanToInt() {
+        EdgeTable[] tables = new EdgeTable[]{new EdgeTable("1|table")};
+        EdgeField[] fields = new EdgeField[]{new EdgeField("2|boolean_field")};
+        fields[0].setTableID(1);
+        fields[0].setDataType(dataTypes.get("Boolean"));
+        fields[0].setDefaultValue("true");
+        tables[0].addNativeField(2);
+        tables[0].makeArrays();
+        CreateDDLMySQL ddl = new CreateDDLMySQL(tables, fields);
+        String output = ddl.getSQLString("");
+        assertTrue("String boolean is converted to integer",
+            output.contains("boolean_field BOOL DEFAULT 1"));
+    }
+
+    @Test
+    public void testInvalidConvertStrBooleanToInt() {
+        EdgeTable[] tables = new EdgeTable[]{new EdgeTable("1|table")};
+        EdgeField[] fields = new EdgeField[]{new EdgeField("2|boolean_field")};
+        fields[0].setTableID(1);
+        fields[0].setDataType(dataTypes.get("Boolean"));
+        fields[0].setDefaultValue("notaboolean");
+        tables[0].addNativeField(2);
+        tables[0].makeArrays();
+        CreateDDLMySQL ddl = new CreateDDLMySQL(tables, fields);
+        String output = ddl.getSQLString("");
+        assertFalse("Invalid string boolean is given a default value",
+            output.contains("boolean_field BOOL DEFAULT notaboolean"));
+    }
+
+    @Test
+    public void testInvalidDefaultIntegerValue() {
+        EdgeTable[] tables = new EdgeTable[]{new EdgeTable("1|table")};
+        EdgeField[] fields = new EdgeField[]{new EdgeField("2|integer_field")};
+        fields[0].setTableID(1);
+        fields[0].setDataType(dataTypes.get("Integer"));
+        fields[0].setDefaultValue("notaninteger");
+        tables[0].addNativeField(2);
+        tables[0].makeArrays();
+        CreateDDLMySQL ddl = new CreateDDLMySQL(tables, fields);
+        String output = ddl.getSQLString("");
+        assertFalse("Invalid default integer is given a default value",
+            output.contains("integer_field INT DEFAULT notanint"));
+    }
+
+    @Test
     public void testValidVarcharLengthConstraint() {
         EdgeTable[] tables = new EdgeTable[]{new EdgeTable("1|table")};
         EdgeField[] fields = new EdgeField[]{new EdgeField("2|varchar_field")};
@@ -160,6 +205,28 @@ public class CreateDDLMySQLTest {
         String output = ddl.getSQLString("");
         assertTrue("Foreign key clause generated correctly",
             output.contains("CONSTRAINT table2_FK1 FOREIGN KEY(foreign_key) REFERENCES table1(primary_key)"));
+    }
+
+    @Test
+    public void testInvalidForeignKey() {
+        EdgeTable[] tables = new EdgeTable[]{new EdgeTable("1|table")};
+        EdgeField[] fields = new EdgeField[]{
+            new EdgeField("2|do_not_reference"),
+            new EdgeField("3|foreign_key")
+        };
+        fields[0].setTableID(1);
+        fields[1].setTableID(1);
+        fields[1].setTableBound(1);
+        fields[1].setFieldBound(2);
+        tables[0].addNativeField(2);
+        tables[0].addNativeField(3);
+        tables[0].makeArrays();
+        tables[0].setRelatedField(1, 2);
+        CreateDDLMySQL ddl = new CreateDDLMySQL(tables, fields);
+        String output = ddl.getSQLString("");
+        System.out.println(output);
+        assertFalse("Invalid foreign key clause is not generated",
+            output.contains("FOREIGN KEY(foreign_key)") && output.contains("REFERENCES table(do_not_reference)"));
     }
 
     @Test
