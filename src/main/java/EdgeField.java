@@ -1,4 +1,5 @@
 import java.util.StringTokenizer;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -112,15 +113,16 @@ public class EdgeField {
    
    public String toString() {
       logger.debug("Generated string representation for EdgeField: {}", name);
-      return numFigure + EdgeConvertFileParser.DELIM +
-      name + EdgeConvertFileParser.DELIM +
-      tableID + EdgeConvertFileParser.DELIM +
-      tableBound + EdgeConvertFileParser.DELIM +
-      fieldBound + EdgeConvertFileParser.DELIM +
-      dataType + EdgeConvertFileParser.DELIM +
-      varcharValue + EdgeConvertFileParser.DELIM +
-      isPrimaryKey + EdgeConvertFileParser.DELIM +
-      disallowNull + EdgeConvertFileParser.DELIM +
-      defaultValue;
+      return "numFigure: " + numFigure + EdgeConvertFileParser.DELIM +
+      "name: " + name + EdgeConvertFileParser.DELIM +
+      "tableID: " + tableID + EdgeConvertFileParser.DELIM +
+      "tableBound: " + tableBound + EdgeConvertFileParser.DELIM +
+      "fieldBound: " + fieldBound + EdgeConvertFileParser.DELIM +
+      "dataType: " + dataType + EdgeConvertFileParser.DELIM +
+      "varcharValue: " + varcharValue + EdgeConvertFileParser.DELIM +
+      "isPrimaryKey: " + isPrimaryKey + EdgeConvertFileParser.DELIM +
+      "disallowNull: " + disallowNull + EdgeConvertFileParser.DELIM +
+      "defaultValue: " + defaultValue;
+
    }
 }
