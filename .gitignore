@@ -41,3 +41,4 @@ settings.json
 .cache/
 .gradle/
 .upm/
+.settings/
