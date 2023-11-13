@@ -1,9 +1,4 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import java.io.*;
-import java.util.*;
+import java.util.Arrays;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -78,5 +73,14 @@ public abstract class EdgeConvertCreateDDL {
    public abstract String getSQLString();
    
    public abstract void createDDL();
+
+   @Override
+   public String toString() {
+      return "EdgeConvertCreateDDL [tables=" + Arrays.toString(tables) + ", fields=" + Arrays.toString(fields)
+            + ", numBoundTables=" + Arrays.toString(numBoundTables) + ", maxBound=" + maxBound + ", sb=" + sb
+            + ", selected=" + selected + "]";
+   }
+
+   
    
 }//EdgeConvertCreateDDL

@@ -26,66 +26,66 @@ public class EdgeConnector {
 }
    
    public int getNumConnector() {
-      logger.info("numConnector value: {}", numConnector);
+      logger.debug("numConnector value: {}", numConnector);
       return numConnector;
    }
    
    public int getEndPoint1() {
-      logger.info("endPoint1 value: {}", endPoint1);
+      logger.debug("endPoint1 value: {}", endPoint1);
       return endPoint1;
    }
    
    public int getEndPoint2() {
-      logger.info("endPoint2 value: {}", endPoint2);
+      logger.debug("endPoint2 value: {}", endPoint2);
       return endPoint2;
    }
    
    public String getEndStyle1() {
-      logger.info("endStyle1 value: {}", endStyle1);
+      logger.debug("endStyle1 value: {}", endStyle1);
       return endStyle1;
    }
    
    public String getEndStyle2() {
-      logger.info("endStyle2 value: {}", endStyle2);
+      logger.debug("endStyle2 value: {}", endStyle2);
       return endStyle2;
    }
    public boolean getIsEP1Field() {
-      logger.info("isEP1Field value: {}", isEP1Field);
+      logger.debug("isEP1Field value: {}", isEP1Field);
       return isEP1Field;
    }
    
    public boolean getIsEP2Field() {
-      logger.info("isEP2Field value: {}", isEP2Field);
+      logger.debug("isEP2Field value: {}", isEP2Field);
       return isEP2Field;
    }
 
    public boolean getIsEP1Table() {
-      logger.info("isEP1Table value: {}", isEP1Table);
+      logger.debug("isEP1Table value: {}", isEP1Table);
       return isEP1Table;
    }
 
    public boolean getIsEP2Table() {
-      logger.info("isEP2Table value: {}", isEP2Table);
+      logger.debug("isEP2Table value: {}", isEP2Table);
       return isEP2Table;
    }
 
    public void setIsEP1Field(boolean value) {
-      logger.info("New isEP1Field value: {}", value);
+      logger.debug("New isEP1Field value: {}", value);
       isEP1Field = value;
    }
    
    public void setIsEP2Field(boolean value) {
-      logger.info("New isEP2Field value: {}", value);
+      logger.debug("New isEP2Field value: {}", value);
       isEP2Field = value;
    }
 
    public void setIsEP1Table(boolean value) {
-      logger.info("New isEP1Table value: {}", value);
+      logger.debug("New isEP1Table value: {}", value);
       isEP1Table = value;
    }
 
    public void setIsEP2Table(boolean value) {
-      logger.info("New isEP2Table value: {}", value);
+      logger.debug("New isEP2Table value: {}", value);
       isEP2Table = value;
    }
 }
