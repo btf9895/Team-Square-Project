@@ -112,7 +112,7 @@ public class EdgeField {
    }
    
    public String toString() {
-      logger.debug("Generated string representation for EdgeField: {}", name);
+      System.out.println("Generated string representation for EdgeField: {}" + name);
       return "numFigure: " + numFigure + EdgeConvertFileParser.DELIM +
       "name: " + name + EdgeConvertFileParser.DELIM +
       "tableID: " + tableID + EdgeConvertFileParser.DELIM +
