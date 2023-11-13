@@ -91,6 +91,7 @@ public class EdgeField {
          varcharValue = value;
          logger.info("Set varcharValue to: " + value);
       } else {
+         varcharValue = VARCHAR_DEFAULT_LENGTH;
          logger.warn("Attempted to set varcharValue with a non-positive value: {}", value);
       }
    }
@@ -103,6 +104,7 @@ public class EdgeField {
          dataType = value;
          logger.info("Set dataType to: " + value);
       } else {
+         dataType = 0;
          logger.error("Attempted to set invalid dataType: {}", value);
       }
    }
@@ -112,7 +114,8 @@ public class EdgeField {
    }
    
    public String toString() {
-      logger.debug("Generated string representation for EdgeField: {}", name);
+      logger.debug("Generated string representation for EdgeField: {}" + name);
+
       return "numFigure: " + numFigure + EdgeConvertFileParser.DELIM +
       "name: " + name + EdgeConvertFileParser.DELIM +
       "tableID: " + tableID + EdgeConvertFileParser.DELIM +
