@@ -202,37 +202,37 @@ The method should return a string representation of the `EdgeConvertCreateDDL` o
 EdgeField:
 ---------
 - Data Types
- - Given that the DataType number is set to -6, the DataType should not change to -6.
- - Given that the DataType number is set to 2, the DataType should change to 2.
- - Given that the DataType number is set to 22, the DataType should not change to 22.
+  - Given that the DataType number is set to -6, the DataType should not change to -6.
+   - Given that the DataType number is set to 2, the DataType should change to 2.
+   - Given that the DataType number is set to 22, the DataType should not change to 22.
 
 - VarChar
- - Given that the VarChar value is set to 0, the VarChar value should not change to 0.
- - Given that the VarChar value is set to -1, the VarChar value should not change to -1.
- - Given that the VarChar value is set to 1, the VarChar value should change to 1.
-- Given that the VarChar value is set to 7777777, the VarChar value should change to 7777777.
+   - Given that the VarChar value is set to 0, the VarChar value should not change to 0.
+   - Given that the VarChar value is set to -1, the VarChar value should not change to -1.
+   - Given that the VarChar value is set to 1, the VarChar value should change to 1.
+   - Given that the VarChar value is set to 7777777, the VarChar value should change to 7777777.
 
 - Default Value
- - Given that disallowNull is set to true, when the defaultValue is set to null, the defaultValue should be changed to null. 
-- Given that the default value is changed to 0, the default value then should be set to 0.
-- Given that the default value is changed to a string including special characters, the entire string should be set as the default value.
-- Given that the default value is changed to a large number, it should be set to the entire number.
+  - Given that disallowNull is set to true, when the defaultValue is set to null, the defaultValue should be changed to null. 
+  - Given that the default value is changed to 0, the default value then should be set to 0.
+  - Given that the default value is changed to a string including special characters, the entire string should be set as the default value.
+  - Given that the default value is changed to a large number, it should be set to the entire number.
 
 - Primary Key
- - Given the primary key checkbox is checked, the corrosponding value should be set as the primary key.
-- Given the primary key checkbox is unchecked, the corrosponding value should not be set as the primary key.
+  - Given the primary key checkbox is checked, the corrosponding value should be set as the primary key.
+  - Given the primary key checkbox is unchecked, the corrosponding value should not be set as the primary key.
 
 - Null Disallowed
- - Given that nullDisallowed is checked, the corrosponding column should not allow null values.
- - Given that nullDisallowed is unchecked, the corrosponding column should allow null values.
+  - Given that nullDisallowed is checked, the corrosponding column should not allow null values.
+  - Given that nullDisallowed is unchecked, the corrosponding column should allow null values.
 
 - TableID
- - Given that TableID is set to a high number, the tableID should be changed to a high number.
- - Given that TableID is set to 0, the tableID should be changed to 0.
+   - Given that TableID is set to a high number, the tableID should be changed to a high number.
+   - Given that TableID is set to 0, the tableID should be changed to 0.
 
 - Field Bound
- - Given that Field Bound is set to a high number, the Field Bound should be changed to a high number.
- - Given that Field Bound is set to 0, the Field Bound should be changed to 0.
+   - Given that Field Bound is set to a high number, the Field Bound should be changed to a high number.
+   - Given that Field Bound is set to 0, the Field Bound should be changed to 0.
 
 - String Array Data Type
- - Given that a new EdgeField object is created, the string array of data types should be {"Varchar", "Boolean", "Integer", "Double"}
+   - Given that a new EdgeField object is created, the string array of data types should be {"Varchar", "Boolean", "Integer", "Double"}
