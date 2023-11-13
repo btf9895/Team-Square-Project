@@ -202,18 +202,18 @@ The method should return a string representation of the `EdgeConvertCreateDDL` o
 EdgeField:
 ---------
 - Data Types
-  - Given that the DataType number is set to -6, the DataType should not change to -6.
+  - Given that the DataType number is set to -6, the DataType should not change to -6 (This test will fail because there's no negative index in the DataType array).
    - Given that the DataType number is set to 2, the DataType should change to 2.
-   - Given that the DataType number is set to 22, the DataType should not change to 22.
+   - Given that the DataType number is set to 22, the DataType should not change to 22 (This test will fail because there's no index position of 22 in the DataType array).
 
 - VarChar
-   - Given that the VarChar value is set to 0, the VarChar value should not change to 0.
-   - Given that the VarChar value is set to -1, the VarChar value should not change to -1.
+   - Given that the VarChar value is set to 0, the VarChar value should not change to 0 (This test will fail because what is effectively an empty varchar value won't work for this program).
+   - Given that the VarChar value is set to -1, the VarChar value should not change to -1 (This test will fail because a negative varchar value won't work for this program).
    - Given that the VarChar value is set to 1, the VarChar value should change to 1.
    - Given that the VarChar value is set to 7777777, the VarChar value should change to 7777777.
 
 - Default Value
-  - Given that disallowNull is set to true, when the defaultValue is set to null, the defaultValue should be changed to null. 
+  - Given that disallowNull is set to true, when the defaultValue is set to null, the defaultValue should be changed to null (This test will fail because it checks if defaultValue is NOT null). 
   - Given that the default value is changed to 0, the default value then should be set to 0.
   - Given that the default value is changed to a string including special characters, the entire string should be set as the default value.
   - Given that the default value is changed to a large number, it should be set to the entire number.
