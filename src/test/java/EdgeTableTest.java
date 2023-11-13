@@ -1,6 +1,5 @@
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,15 +8,15 @@ public class EdgeTableTest {
 
   @Before
   public void setup() {
-    et1 = new EdgeTable("42|TestTable"); // Updated numFigure to 42
+    et1 = new EdgeTable("42|TestTable");
 
-    et1.addNativeField(42); // Updated native field numbers
+    et1.addNativeField(42);
     et1.addNativeField(24);
     et1.addNativeField(15);
     et1.addNativeField(37);
     et1.addNativeField(9);
 
-    et1.addRelatedTable(20); // Updated related table numbers
+    et1.addRelatedTable(20);
     et1.addRelatedTable(10);
     et1.addRelatedTable(35);
     et1.addRelatedTable(50);
@@ -25,17 +24,17 @@ public class EdgeTableTest {
   }
 
   @Test
-  public void shouldReturnNumFigure() {
+  public void testNumFigure() {
     assertThat(et1.getNumFigure(), is(42));
   }
 
   @Test
-  public void shouldReturnTableName() {
+  public void testName() {
     assertThat(et1.getName(), is("TestTable"));
   }
 
   @Test
-  public void shouldGetNativeFields() {
+  public void testGetNativeFieldsArray() {
     et1.makeArrays();
     int[] arr = et1.getNativeFieldsArray();
 
@@ -45,8 +44,8 @@ public class EdgeTableTest {
   }
 
   @Test
-  public void shouldAddNativeField() {
-    et1.addNativeField(55); // Added new native fields
+  public void testAddNativeField() {
+    et1.addNativeField(55);
     et1.addNativeField(18);
 
     et1.makeArrays();
@@ -57,7 +56,7 @@ public class EdgeTableTest {
   }
 
   @Test
-  public void shouldGetRelatedFields() {
+  public void testGetRelatedFieldsArray() {
     et1.makeArrays();
     int[] arr = et1.getRelatedFieldsArray();
 
@@ -67,9 +66,9 @@ public class EdgeTableTest {
   }
 
   @Test
-  public void shouldSetRelatedFields() {
+  public void testSetRelatedFields() {
     et1.makeArrays();
-    et1.setRelatedField(1, 25); // Updated related field values
+    et1.setRelatedField(1, 25);
     et1.setRelatedField(3, 30);
     et1.setRelatedField(4, 45);
 
@@ -82,7 +81,7 @@ public class EdgeTableTest {
   }
 
   @Test
-  public void shouldGetRelatedTables() {
+  public void testGetRelatedTablesArray() {
     et1.makeArrays();
     int[] arr = et1.getRelatedTablesArray();
 
@@ -92,8 +91,8 @@ public class EdgeTableTest {
   }
 
   @Test
-  public void shouldAddRelatedTable() {
-    et1.addRelatedTable(60); // Added new related tables
+  public void testAddRelatedTable() {
+    et1.addRelatedTable(60);
     et1.addRelatedTable(70);
 
     et1.makeArrays();
@@ -104,7 +103,7 @@ public class EdgeTableTest {
   }
 
   @Test
-  public void shouldMoveFieldUp() {
+  public void testMoveFieldUp() {
     et1.makeArrays();
     et1.setRelatedField(0, 1);
     et1.setRelatedField(1, 2);
@@ -126,7 +125,7 @@ public class EdgeTableTest {
   }
 
   @Test
-  public void shouldMoveFieldDown() {
+  public void testMoveFieldDown() {
     et1.makeArrays();
     et1.setRelatedField(0, 1);
     et1.setRelatedField(1, 2);
@@ -134,21 +133,21 @@ public class EdgeTableTest {
     et1.setRelatedField(3, 4);
     et1.setRelatedField(4, 5);
 
-    et1.moveFieldDown(4); // Move the last field down
+    et1.moveFieldDown(4);
     int[] arr = et1.getRelatedFieldsArray();
     assertThat(arr[arr.length - 1], is(5));
 
-    et1.moveFieldDown(2); // Move the field at index 2 down
+    et1.moveFieldDown(2);
     assertThat(arr[3], is(3));
     assertThat(arr[2], is(4));
 
-    et1.moveFieldDown(0); // Move the first field down
+    et1.moveFieldDown(0);
     assertThat(arr[0], is(2));
     assertThat(arr[1], is(1));
   }
 
   @Test
-  public void shouldMakeArrays() {
+  public void testMakeArrays() {
     et1.makeArrays();
     int[] tableArr = et1.getRelatedTablesArray();
     int[] fieldArr = et1.getNativeFieldsArray();
