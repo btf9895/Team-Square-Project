@@ -12,16 +12,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class EdgeConvertFileParser {
-   //private String filename = "test.edg";
    private File parseFile;
-   private FileReader fr;
    private BufferedReader br;
    private ArrayList alTables, alFields, alConnectors;
    private EdgeTable[] tables;
    private EdgeField[] fields;
    private EdgeConnector[] connectors;
-   private int endPoint1, endPoint2;
-   private String endStyle1, endStyle2;
    public static final String EDGE_ID = "EDGE Diagram File"; //first line of .edg files should be this
    public static final String SAVE_ID = "EdgeConvert Save File"; //first line of save files should be this
    public static final String DELIM = "|";
@@ -108,17 +104,17 @@ public class EdgeConvertFileParser {
             currentLine = br.readLine().trim(); // this should be "{"
             currentLine = br.readLine().trim(); // not interested in Style
             currentLine = br.readLine().trim(); // Figure1
-            endPoint1 = Integer.parseInt(currentLine.substring(currentLine.indexOf(" ") + 1));
+            int endPoint1 = Integer.parseInt(currentLine.substring(currentLine.indexOf(" ") + 1));
             currentLine = br.readLine().trim(); // Figure2
-            endPoint2 = Integer.parseInt(currentLine.substring(currentLine.indexOf(" ") + 1));
+            int endPoint2 = Integer.parseInt(currentLine.substring(currentLine.indexOf(" ") + 1));
             currentLine = br.readLine().trim(); // not interested in EndPoint1
             currentLine = br.readLine().trim(); // not interested in EndPoint2
             currentLine = br.readLine().trim(); // not interested in SuppressEnd1
             currentLine = br.readLine().trim(); // not interested in SuppressEnd2
             currentLine = br.readLine().trim(); // End1
-            endStyle1 = currentLine.substring(currentLine.indexOf("\"") + 1, currentLine.lastIndexOf("\"")); //get the End1 parameter
+            String endStyle1 = currentLine.substring(currentLine.indexOf("\"") + 1, currentLine.lastIndexOf("\"")); //get the End1 parameter
             currentLine = br.readLine().trim(); // End2
-            endStyle2 = currentLine.substring(currentLine.indexOf("\"") + 1, currentLine.lastIndexOf("\"")); //get the End2 parameter
+            String endStyle2 = currentLine.substring(currentLine.indexOf("\"") + 1, currentLine.lastIndexOf("\"")); //get the End2 parameter
 
             do { //advance to end of record
                currentLine = br.readLine().trim();
@@ -288,10 +284,9 @@ public class EdgeConvertFileParser {
 
    public void openFile(File inputFile) {
       try {
-         fr = new FileReader(inputFile);
-         br = new BufferedReader(fr);
+         br = new BufferedReader(new FileReader(inputFile));
          //test for what kind of file we have
-         currentLine = br.readLine().trim();
+         String currentLine = br.readLine().trim();
          if (currentLine.startsWith(EDGE_ID)) { //the file chosen is an Edge Diagrammer file
             this.parseEdgeFile(); //parse the file
             br.close();
