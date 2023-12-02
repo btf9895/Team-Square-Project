@@ -12,8 +12,8 @@ public class EdgeTable {
       StringTokenizer st = new StringTokenizer(inputString, EdgeConvertFileParser.DELIM);
       numFigure = Integer.parseInt(st.nextToken());
       name = st.nextToken();
-      alRelatedTables = new ArrayList<>();
-      alNativeFields = new ArrayList<>();
+      alRelatedTables = new ArrayList<Integer>();
+      alNativeFields = new ArrayList<Integer>();
       logger.debug("EdgeTable constructed with inputString: " + inputString);
    }
    
