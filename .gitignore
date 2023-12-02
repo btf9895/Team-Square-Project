@@ -1,3 +1,5 @@
+*.sql
+
 # Compiled class files
 build/
 *.class

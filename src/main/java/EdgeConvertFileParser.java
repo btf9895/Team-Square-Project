@@ -315,12 +315,12 @@ public class EdgeConvertFileParser {
       catch (FileNotFoundException fnfe) {
          System.out.println("Cannot find \"" + inputFile.getName() + "\".");
          logger.error("An error occurred while processing the file: " + fnfe.getMessage(), fnfe);
-         System.exit(0);
+          JOptionPane.showMessageDialog(null, "Could not find file. Please try again");
       } // catch FileNotFoundException
       catch (IOException ioe) {
          System.out.println(ioe);
          logger.error("An error occurred while processing the file: " + ioe.getMessage(), ioe);
-         System.exit(0);
+          JOptionPane.showMessageDialog(null, "Something went wrong.  Please try again. ");
       } // catch IOException
    } // openFile()
 } // EdgeConvertFileHandler
