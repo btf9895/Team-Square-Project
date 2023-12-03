@@ -18,7 +18,6 @@ public class EdgeFieldTests {
         testObj = new EdgeField("3|Grade|4|CourseName|5|Number|6|FacSSN|7|StudentSSN|8|StudentName|11|FacultyName");
 	}
 
-
     /** Testing Data Type inputs */
 
     @Test
