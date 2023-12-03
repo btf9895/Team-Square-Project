@@ -27,18 +27,18 @@ public class EdgeFieldTests {
         assertEquals(0, testObj.getDataType());
     }
 
-     @Test
+    @Test
     public void testSettingValidDataType() {
         testObj.setDataType(2);
         assertEquals(testObj.getDataType(), 2);
 
      }
 
-    //Should fail
-     @Test
-    public void setInvalidBigDataType() throws Exception{
+    @Test
+    public void setInvalidBigDataType() throws Exception {
+        int originalDataType = testObj.getDataType();
         testObj.setDataType(22);
-        assertEquals(testObj.getDataType(), 22);
+        assertEquals(originalDataType, testObj.getDataType());
     }
 
     /** Test VarCharValue */
@@ -48,12 +48,12 @@ public class EdgeFieldTests {
       testObj.setVarcharValue(0);
       assertEquals(1, testObj.getVarcharValue());
     }
-     
-//should fail
-      @Test
-    public void testSetInvalidNegativeVarCharValue() throws Exception{
+
+    @Test
+    public void testSetInvalidNegativeVarCharValue() throws Exception {
+        int originalVarCharValue = testObj.getVarcharValue();
         testObj.setVarcharValue(-1);
-        assertEquals(testObj.getVarcharValue(), -1);
+        assertEquals(originalVarCharValue, testObj.getVarcharValue());
     }
 
 
