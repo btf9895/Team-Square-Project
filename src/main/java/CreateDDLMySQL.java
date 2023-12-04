@@ -95,8 +95,18 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
                   if( nativeFieldCount < nativeFields.length -1){
                        sb.append(",\r\n"); //end of field
                   } else {
+                     if(numForeignKey > 0 || numPrimaryKey > 0){
+                     sb.append(",\r\n"); //end of field
+                   } else {
                      sb.append("\r\n"); //end of field
+                   }
+
+                    
                   }
+
+                  //  if(numForeignKey > 0 || numPrimaryKey > 0){
+                  //    sb.append(",\r\n"); //end of field
+                  //  }
 
                 // sb.append(",\r\n"); //end of field
 
