@@ -247,7 +247,7 @@ public class EdgeConvertFileParser {
          
          // numFigure = Integer.parseInt(stField.nextToken());
          numFigure = Integer.parseInt( stField.nextToken().substring(11) );
-         fieldName = stField.nextToken();
+         fieldName = stField.nextToken().substring(5) ;
          tempField = new EdgeField(numFigure + DELIM + fieldName);
         
          tempField.setTableID(Integer.parseInt(stField.nextToken().substring(8).trim() ));
@@ -259,7 +259,7 @@ public class EdgeConvertFileParser {
          tempField.setIsPrimaryKey(Boolean.valueOf(stField.nextToken()).booleanValue());
          tempField.setDisallowNull(Boolean.valueOf(stField.nextToken()).booleanValue());
          if (stField.hasMoreTokens()) { //Default Value may not be defined
-            tempField.setDefaultValue(stField.nextToken());
+            tempField.setDefaultValue( stField.nextToken().substring(13) );
          }
          alFields.add(tempField);
       }
