@@ -29,6 +29,7 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
    public void createDDL(String defaultDatabaseName) {
       EdgeConvertGUI.setReadSuccess(true);
       databaseName = defaultDatabaseName == null ? generateDatabaseName() : defaultDatabaseName; // Avoid getting user input from JOptionPane.showInputDialog()
+      sb.append("DROP DATABASE IF EXISTS " + databaseName + ";\r\n");
       sb.append("CREATE DATABASE " + databaseName + ";\r\n");
       sb.append("USE " + databaseName + ";\r\n");
 
@@ -81,7 +82,11 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
                   if (currentField.getFieldBound() != 0) {
                      numForeignKey++;
                   }
-                  sb.append(",\r\n"); //end of field
+                  if (nativeFieldCount < (nativeFields.length - 1)) {
+                     sb.append(",\r\n"); //end of field
+                  } else {
+                     sb.append("\r\n"); //end of field
+                  }
                   logger.trace("Adding field: {}", sb);
                }
                if (numPrimaryKey > 0) { //table has primary key(s)
