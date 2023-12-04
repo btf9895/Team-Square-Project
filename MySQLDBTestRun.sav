@@ -1,0 +1,34 @@
+EdgeConvert Save File
+#Tables#
+Table: 1
+{
+TableName: STUDENT
+NativeFields: 7|8
+RelatedTables: 
+RelatedFields: 0|0
+}
+
+Table: 2
+{
+TableName: FACULTY
+NativeFields: 11|6
+RelatedTables: 13
+RelatedFields: 0|0
+}
+
+Table: 13
+{
+TableName: COURSES
+NativeFields: 3|5
+RelatedTables: 2
+RelatedFields: 0|0
+}
+
+#Fields#
+numFigure: 3|name: Grade|tableID: 13|tableBound: 0|fieldBound: 0|dataType: 0|varcharValue: 1|isPrimaryKey: false|disallowNull: false|defaultValue: 
+numFigure: 4|name: CourseName|tableID: 0|tableBound: 0|fieldBound: 0|dataType: 0|varcharValue: 1|isPrimaryKey: false|disallowNull: false|defaultValue: 
+numFigure: 5|name: Number|tableID: 13|tableBound: 0|fieldBound: 0|dataType: 0|varcharValue: 1|isPrimaryKey: false|disallowNull: false|defaultValue: 
+numFigure: 6|name: FacSSN|tableID: 2|tableBound: 0|fieldBound: 0|dataType: 0|varcharValue: 1|isPrimaryKey: false|disallowNull: false|defaultValue: 
+numFigure: 7|name: StudentSSN|tableID: 1|tableBound: 0|fieldBound: 0|dataType: 0|varcharValue: 1|isPrimaryKey: false|disallowNull: false|defaultValue: 
+numFigure: 8|name: StudentName|tableID: 1|tableBound: 0|fieldBound: 0|dataType: 0|varcharValue: 9|isPrimaryKey: false|disallowNull: false|defaultValue: banana
+numFigure: 11|name: FacultyName|tableID: 2|tableBound: 0|fieldBound: 0|dataType: 0|varcharValue: 1|isPrimaryKey: false|disallowNull: false|defaultValue: 

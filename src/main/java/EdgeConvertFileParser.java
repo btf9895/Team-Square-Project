@@ -206,6 +206,7 @@ public class EdgeConvertFileParser {
       currentLine = br.readLine();
       currentLine = br.readLine(); //this should be "Table: "
       while (currentLine.startsWith("Table: ")) {
+
          numFigure = Integer.parseInt(currentLine.substring(currentLine.indexOf(" ") + 1)); //get the Table number
          currentLine = br.readLine(); //this should be "{"
          currentLine = br.readLine(); //this should be "TableName"
@@ -241,15 +242,20 @@ public class EdgeConvertFileParser {
          currentLine = br.readLine(); //this should be either the next "Table: ", #Fields#
       }
       while ((currentLine = br.readLine()) != null) {
+       //
          stField = new StringTokenizer(currentLine, DELIM);
-         numFigure = Integer.parseInt(stField.nextToken());
+         
+         // numFigure = Integer.parseInt(stField.nextToken());
+         numFigure = Integer.parseInt( stField.nextToken().substring(11) );
          fieldName = stField.nextToken();
          tempField = new EdgeField(numFigure + DELIM + fieldName);
-         tempField.setTableID(Integer.parseInt(stField.nextToken()));
-         tempField.setTableBound(Integer.parseInt(stField.nextToken()));
-         tempField.setFieldBound(Integer.parseInt(stField.nextToken()));
-         tempField.setDataType(Integer.parseInt(stField.nextToken()));
-         tempField.setVarcharValue(Integer.parseInt(stField.nextToken()));
+        
+         tempField.setTableID(Integer.parseInt(stField.nextToken().substring(8).trim() ));
+         tempField.setTableBound(Integer.parseInt( stField.nextToken().substring(11).trim() ));
+        
+         tempField.setFieldBound(Integer.parseInt( stField.nextToken().substring(11).trim() ));
+         tempField.setDataType(Integer.parseInt( stField.nextToken().substring(9).trim() ));
+         tempField.setVarcharValue( Integer.parseInt(stField.nextToken().substring(14).trim() ));
          tempField.setIsPrimaryKey(Boolean.valueOf(stField.nextToken()).booleanValue());
          tempField.setDisallowNull(Boolean.valueOf(stField.nextToken()).booleanValue());
          if (stField.hasMoreTokens()) { //Default Value may not be defined
