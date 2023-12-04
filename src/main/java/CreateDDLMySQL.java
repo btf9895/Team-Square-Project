@@ -89,13 +89,16 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
                      numForeignKey++;
                   }
 
-                  // if( nativeFieldCount < nativeFields.length -2){
-                  //      sb.append(",\r\n"); //end of field
-                  // }
+                  if( nativeFieldCount < nativeFields.length -1){
+                       sb.append(",\r\n"); //end of field
+                  } else {
+                     sb.append("\r\n"); //end of field
+                  }
 
-                 sb.append(",\r\n"); //end of field
+                // sb.append(",\r\n"); //end of field
+
                   logger.trace("Adding field: {}", sb);
-               }
+               } //end of for loop
                if (numPrimaryKey > 0) { //table has primary key(s)
                   sb.append("CONSTRAINT " + tables[tableCount].getName() + "_PK PRIMARY KEY (");
                   for (int i = 0; i < primaryKey.length; i++) {
