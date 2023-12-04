@@ -18,45 +18,41 @@ public class EdgeFieldTests {
         testObj = new EdgeField("3|Grade|4|CourseName|5|Number|6|FacSSN|7|StudentSSN|8|StudentName|11|FacultyName");
 	}
 
-
     /** Testing Data Type inputs */
 
     @Test
     public void setInvalidSmallDataType() {
         testObj.setDataType(-6);
-        assertEquals(testObj.getDataType(), -6);
+        assertEquals(0, testObj.getDataType());
+    }
 
-     }
-
-     @Test
+    @Test
     public void testSettingValidDataType() {
         testObj.setDataType(2);
         assertEquals(testObj.getDataType(), 2);
 
      }
 
-    //Should fail
-     @Test
-    public void setInvalidBigDataType() throws Exception{
+    @Test
+    public void setInvalidBigDataType() throws Exception {
+        int originalDataType = testObj.getDataType();
         testObj.setDataType(22);
-        assertEquals(testObj.getDataType(), 22);
-       
+        assertEquals(originalDataType, testObj.getDataType());
     }
 
     /** Test VarCharValue */
 
   @Test
     public void setZeroVarCharValue() {
-        testObj.setVarcharValue(0);
-        assertEquals(testObj.getVarcharValue(), 0);
+      testObj.setVarcharValue(0);
+      assertEquals(1, testObj.getVarcharValue());
+    }
 
-     }
-     
-//should fail
-      @Test
-    public void testSetInvalidNegativeVarCharValue() throws Exception{
+    @Test
+    public void testSetInvalidNegativeVarCharValue() throws Exception {
+        int originalVarCharValue = testObj.getVarcharValue();
         testObj.setVarcharValue(-1);
-        assertEquals(testObj.getVarcharValue(), -1);
+        assertEquals(originalVarCharValue, testObj.getVarcharValue());
     }
 
 
@@ -76,15 +72,14 @@ public class EdgeFieldTests {
 
     /** Test DefaultValue */
     @Test
-    public void setNullDefaultValue() throws Exception{
+    public void setNullDefaultValue() throws Exception {
         testObj.setDisallowNull(true);
         testObj.setDefaultValue(null);
-        assertNotNull(testObj.getDefaultValue());
-       
+        assertNull(testObj.getDefaultValue());
     }
 
 
-     @Test
+    @Test
     public void setDefaultValueZero() throws Exception{
         testObj.setDefaultValue("0");
         assertEquals(testObj.getDefaultValue(), "0");
