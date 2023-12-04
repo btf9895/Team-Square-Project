@@ -39,6 +39,7 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
          for (int tableCount = 0; tableCount < numBoundTables.length; tableCount++) { //step through list of tables
             logger.trace("Building tables.. ", "Bound count: " + boundCount, "Table count: " + tableCount);
             if (numBoundTables[tableCount] == boundCount) {
+               sb.append("DROP TABLE IF EXISTS " + tables[tableCount].getName() + ";\r\n");
                sb.append("CREATE TABLE " + tables[tableCount].getName() + " (\r\n");
                int[] nativeFields = tables[tableCount].getNativeFieldsArray();
                int[] relatedFields = tables[tableCount].getRelatedFieldsArray();
