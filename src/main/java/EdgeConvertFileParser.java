@@ -3,7 +3,7 @@ import java.util.*;
 import javax.swing.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
+//functional
 public class EdgeConvertFileParser {
    //private String filename = "test.edg";
    private File parseFile;

@@ -4,6 +4,7 @@ import javax.swing.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+//functional
 public class ParseEdgeFile {
    private File parseFile;
    private FileReader fr;
@@ -33,7 +34,7 @@ public class ParseEdgeFile {
    public static final String DELIM = "|";
    private static final Logger logger = LogManager.getLogger(EdgeConvertFileParser.class);
 
-public ParseEdgeFile(String currentLine, int numFigure, String tableName, int numFields, int numTables,
+    public ParseEdgeFile(String currentLine, int numFigure, String tableName, int numFields, int numTables,
          String fieldName, ArrayList alFields, ArrayList alTables, BufferedReader br, File parseFile, FileReader fr,
           boolean isEntity, boolean isAttribute, String style, String text, int numConnector, int endPoint1,
            int endPoint2, int numLine, String endStyle1, String endStyle2, ArrayList alConnectors) {

@@ -4,7 +4,7 @@ import javax.swing.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
+//functional
 public class ParseSaveFile {
    private File parseFile;
    private FileReader fr;
