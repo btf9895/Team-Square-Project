@@ -6,28 +6,25 @@ import org.apache.logging.log4j.Logger;
 
 
 public class ParseSaveFile {
-    private File parseFile;
+   private File parseFile;
    private FileReader fr;
    private BufferedReader br;
    
    String currentLine;
-    int numFigure;
-     String tableName;
-      int numFields;
-      int numTables;
+   int numFigure;
+   String tableName;
+   int numFields;
+   int numTables;
 
-      String fieldName;
-      ArrayList alFields, alTables;
+   String fieldName;
+   ArrayList alFields, alTables;
 
    public static final String EDGE_ID = "EDGE Diagram File"; //first line of .edg files should be this
    public static final String SAVE_ID = "EdgeConvert Save File"; //first line of save files should be this
    public static final String DELIM = "|";
    private static final Logger logger = LogManager.getLogger(EdgeConvertFileParser.class);
 
-   // public ParseSaveFile(String currentLine, String numFigure, String tableName, String numFields, String numTables, String fieldName, alFields){
-   //    currentLine, numFigure, tableName, numFields, numTables, fieldName, alFields
-   // }
-
+  
 
 public ParseSaveFile(String currentLine, int numFigure, String tableName, int numFields, int numTables,
          String fieldName, ArrayList alFields, ArrayList alTables, BufferedReader br, File parseFile, FileReader fr) {
@@ -52,6 +49,7 @@ public void parseSaveFile() throws IOException { //this method is unclear and co
       EdgeField tempField;
       currentLine = br.readLine();
       currentLine = br.readLine(); //this should be "Table: "
+
       while (currentLine.startsWith("Table: ")) {
 
          numFigure = Integer.parseInt(currentLine.substring(currentLine.indexOf(" ") + 1)); //get the Table number
@@ -89,10 +87,10 @@ public void parseSaveFile() throws IOException { //this method is unclear and co
          currentLine = br.readLine(); //this should be either the next "Table: ", #Fields#
       }
       while ((currentLine = br.readLine()) != null) {
-       //
+       
          stField = new StringTokenizer(currentLine, DELIM);
          
-         // numFigure = Integer.parseInt(stField.nextToken());
+        
          numFigure = Integer.parseInt( stField.nextToken().substring(11) );
          fieldName = stField.nextToken().substring(5) ;
          tempField = new EdgeField(numFigure + DELIM + fieldName);
@@ -105,6 +103,7 @@ public void parseSaveFile() throws IOException { //this method is unclear and co
          tempField.setVarcharValue( Integer.parseInt(stField.nextToken().substring(14).trim() ));
          tempField.setIsPrimaryKey(Boolean.valueOf(stField.nextToken()).booleanValue());
          tempField.setDisallowNull(Boolean.valueOf(stField.nextToken()).booleanValue());
+
          if (stField.hasMoreTokens()) { //Default Value may not be defined
             tempField.setDefaultValue( stField.nextToken().substring(14) );
          }
