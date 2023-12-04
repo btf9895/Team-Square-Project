@@ -1,53 +1,44 @@
-import java.io.*;
-import java.util.*;
-import javax.swing.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
+import javax.swing.JOptionPane;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class EdgeConvertFileParser {
-   //private String filename = "test.edg";
    private File parseFile;
-   private FileReader fr;
    private BufferedReader br;
-   private String currentLine;
    private ArrayList alTables, alFields, alConnectors;
    private EdgeTable[] tables;
    private EdgeField[] fields;
-   private EdgeField tempField;
    private EdgeConnector[] connectors;
-   private String style;
-   private String text;
-   private String tableName;
-   private String fieldName;
-   private boolean isEntity, isAttribute, isUnderlined = false;
-   private int numFigure, numConnector, numFields, numTables, numNativeRelatedFields;
-   private int endPoint1, endPoint2;
-   private int numLine;
-   private String endStyle1, endStyle2;
    public static final String EDGE_ID = "EDGE Diagram File"; //first line of .edg files should be this
    public static final String SAVE_ID = "EdgeConvert Save File"; //first line of save files should be this
    public static final String DELIM = "|";
    private static final Logger logger = LogManager.getLogger(EdgeConvertFileParser.class);
    
    public EdgeConvertFileParser(File constructorFile) {
-      numFigure = 0;
-      numConnector = 0;
       alTables = new ArrayList();
       alFields = new ArrayList();
       alConnectors = new ArrayList();
-      isEntity = false;
-      isAttribute = false;
       parseFile = constructorFile;
-      numLine = 0;
       this.openFile(parseFile);
    }
 
    public void parseEdgeFile() throws IOException {
+      boolean isEntity = false, isAttribute = false, isUnderlined = false;
+      String style, text, currentLine;
       logger.info("Parsing Edge Diagrammer file...");
       while ((currentLine = br.readLine()) != null) {
          currentLine = currentLine.trim();
          if (currentLine.startsWith("Figure ")) { //this is the start of a Figure entry
-            numFigure = Integer.parseInt(currentLine.substring(currentLine.indexOf(" ") + 1)); //get the Figure number
+            int numFigure = Integer.parseInt(currentLine.substring(currentLine.indexOf(" ") + 1)); //get the Figure number
             currentLine = br.readLine().trim(); // this should be "{"
             currentLine = br.readLine().trim();
             if (!currentLine.startsWith("Style")) { // this is to weed out other Figures, like Labels
@@ -58,7 +49,7 @@ public class EdgeConvertFileParser {
                   JOptionPane.showMessageDialog(null, "The Edge Diagrammer file\n" + parseFile + "\ncontains relations.  Please resolve them and try again.");
                   EdgeConvertGUI.setReadSuccess(false);
                   break;
-               } 
+               }
                if (style.startsWith("Entity")) {
                   isEntity = true;
                }
@@ -98,7 +89,7 @@ public class EdgeConvertFileParser {
                   alTables.add(new EdgeTable(numFigure + DELIM + text));
                }
                if (isAttribute) { //create a new EdgeField object and add it to the alFields ArrayList
-                  tempField = new EdgeField(numFigure + DELIM + text);
+                  EdgeField tempField = new EdgeField(numFigure + DELIM + text);
                   tempField.setIsPrimaryKey(isUnderlined);
                   alFields.add(tempField);
                }
@@ -109,21 +100,21 @@ public class EdgeConvertFileParser {
             }
          } // if("Figure")
          if (currentLine.startsWith("Connector ")) { //this is the start of a Connector entry
-            numConnector = Integer.parseInt(currentLine.substring(currentLine.indexOf(" ") + 1)); //get the Connector number
+            int numConnector = Integer.parseInt(currentLine.substring(currentLine.indexOf(" ") + 1)); //get the Connector number
             currentLine = br.readLine().trim(); // this should be "{"
             currentLine = br.readLine().trim(); // not interested in Style
             currentLine = br.readLine().trim(); // Figure1
-            endPoint1 = Integer.parseInt(currentLine.substring(currentLine.indexOf(" ") + 1));
+            int endPoint1 = Integer.parseInt(currentLine.substring(currentLine.indexOf(" ") + 1));
             currentLine = br.readLine().trim(); // Figure2
-            endPoint2 = Integer.parseInt(currentLine.substring(currentLine.indexOf(" ") + 1));
+            int endPoint2 = Integer.parseInt(currentLine.substring(currentLine.indexOf(" ") + 1));
             currentLine = br.readLine().trim(); // not interested in EndPoint1
             currentLine = br.readLine().trim(); // not interested in EndPoint2
             currentLine = br.readLine().trim(); // not interested in SuppressEnd1
             currentLine = br.readLine().trim(); // not interested in SuppressEnd2
             currentLine = br.readLine().trim(); // End1
-            endStyle1 = currentLine.substring(currentLine.indexOf("\"") + 1, currentLine.lastIndexOf("\"")); //get the End1 parameter
+            String endStyle1 = currentLine.substring(currentLine.indexOf("\"") + 1, currentLine.lastIndexOf("\"")); //get the End1 parameter
             currentLine = br.readLine().trim(); // End2
-            endStyle2 = currentLine.substring(currentLine.indexOf("\"") + 1, currentLine.lastIndexOf("\"")); //get the End2 parameter
+            String endStyle2 = currentLine.substring(currentLine.indexOf("\"") + 1, currentLine.lastIndexOf("\"")); //get the End2 parameter
 
             do { //advance to end of record
                currentLine = br.readLine().trim();
@@ -200,28 +191,29 @@ public class EdgeConvertFileParser {
    
    public void parseSaveFile() throws IOException { //this method is unclear and confusing in places
       logger.info("Parsing Save file...");
+      int numFigure = 0;
       StringTokenizer stTables, stNatFields, stRelFields, stNatRelFields, stField;
       EdgeTable tempTable;
-      EdgeField tempField;
+      String currentLine;
       currentLine = br.readLine();
       currentLine = br.readLine(); //this should be "Table: "
       while (currentLine.startsWith("Table: ")) {
          numFigure = Integer.parseInt(currentLine.substring(currentLine.indexOf(" ") + 1)); //get the Table number
          currentLine = br.readLine(); //this should be "{"
          currentLine = br.readLine(); //this should be "TableName"
-         tableName = currentLine.substring(currentLine.indexOf(" ") + 1);
+         String tableName = currentLine.substring(currentLine.indexOf(" ") + 1);
          tempTable = new EdgeTable(numFigure + DELIM + tableName);
          
          currentLine = br.readLine(); //this should be the NativeFields list
          stNatFields = new StringTokenizer(currentLine.substring(currentLine.indexOf(" ") + 1), DELIM);
-         numFields = stNatFields.countTokens();
+         int numFields = stNatFields.countTokens();
          for (int i = 0; i < numFields; i++) {
             tempTable.addNativeField(Integer.parseInt(stNatFields.nextToken()));
          }
          
          currentLine = br.readLine(); //this should be the RelatedTables list
          stTables = new StringTokenizer(currentLine.substring(currentLine.indexOf(" ") + 1), DELIM);
-         numTables = stTables.countTokens();
+         int numTables = stTables.countTokens();
          for (int i = 0; i < numTables; i++) {
             tempTable.addRelatedTable(Integer.parseInt(stTables.nextToken()));
          }
@@ -243,8 +235,8 @@ public class EdgeConvertFileParser {
       while ((currentLine = br.readLine()) != null) {
          stField = new StringTokenizer(currentLine, DELIM);
          numFigure = Integer.parseInt(stField.nextToken());
-         fieldName = stField.nextToken();
-         tempField = new EdgeField(numFigure + DELIM + fieldName);
+         String fieldName = stField.nextToken();
+         EdgeField tempField = new EdgeField(numFigure + DELIM + fieldName);
          tempField.setTableID(Integer.parseInt(stField.nextToken()));
          tempField.setTableBound(Integer.parseInt(stField.nextToken()));
          tempField.setFieldBound(Integer.parseInt(stField.nextToken()));
@@ -292,11 +284,9 @@ public class EdgeConvertFileParser {
 
    public void openFile(File inputFile) {
       try {
-         fr = new FileReader(inputFile);
-         br = new BufferedReader(fr);
+         br = new BufferedReader(new FileReader(inputFile));
          //test for what kind of file we have
-         currentLine = br.readLine().trim();
-         numLine++;
+         String currentLine = br.readLine().trim();
          if (currentLine.startsWith(EDGE_ID)) { //the file chosen is an Edge Diagrammer file
             this.parseEdgeFile(); //parse the file
             br.close();

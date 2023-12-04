@@ -6,13 +6,10 @@ import org.apache.logging.log4j.Logger;
 public abstract class EdgeConvertCreateDDL {
    private static Logger logger = LogManager.getLogger(EdgeConvertCreateDDL.class.getName());
 
-   static String[] products = {"MySQL"};
    protected EdgeTable[] tables; //master copy of EdgeTable objects
    protected EdgeField[] fields; //master copy of EdgeField objects
    protected int[] numBoundTables;
    protected int maxBound;
-   protected StringBuffer sb;
-   protected int selected;
    
    public EdgeConvertCreateDDL(EdgeTable[] tables, EdgeField[] fields) {
       this.tables = tables;
@@ -28,7 +25,6 @@ public abstract class EdgeConvertCreateDDL {
    public void initialize() {
       numBoundTables = new int[tables.length];
       maxBound = 0;
-      sb = new StringBuffer();
 
       for (int i = 0; i < tables.length; i++) { //step through list of tables
          int numBound = 0; //initialize counter for number of bound tables
@@ -77,8 +73,7 @@ public abstract class EdgeConvertCreateDDL {
    @Override
    public String toString() {
       return "EdgeConvertCreateDDL [tables=" + Arrays.toString(tables) + ", fields=" + Arrays.toString(fields)
-            + ", numBoundTables=" + Arrays.toString(numBoundTables) + ", maxBound=" + maxBound + ", sb=" + sb
-            + ", selected=" + selected + "]";
+         + ", numBoundTables=" + Arrays.toString(numBoundTables) + ", maxBound=" + maxBound + "]";
    }
 
    

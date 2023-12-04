@@ -59,8 +59,6 @@ public class EdgeConvertCreateDDLTest {
 		assertEquals(edgeTables.length, this.testObj.numBoundTables.length);
 		// assert that maxBound is initialized to 0
 		assertEquals(0, this.testObj.maxBound);
-		// assert that sb is initialized to an empty string
-		assertEquals("", this.testObj.sb.toString());
 		// assert that getRelatedFieldsArray is called for each table
 		assertEquals(0, this.testObj.getTable(1).getRelatedFieldsArray().length);
 		assertEquals(0, this.testObj.getTable(2).getRelatedFieldsArray().length);
@@ -109,9 +107,7 @@ public class EdgeConvertCreateDDLTest {
 		// assert that the correct field is returned for each numFigure
 		assertEquals(
 				"EdgeConvertCreateDDL [tables=" + Arrays.toString(edgeTables) + ", fields=" + Arrays.toString(edgeFields)
-						+ ", numBoundTables=" + Arrays.toString(this.testObj.numBoundTables) + ", maxBound=" + this.testObj.maxBound
-						+ ", sb=" + this.testObj.sb
-						+ ", selected=" + this.testObj.selected + "]",
+					+ ", numBoundTables=" + Arrays.toString(this.testObj.numBoundTables) + ", maxBound=" + this.testObj.maxBound + "]",
 				this.testObj.toString());
 	}
 
