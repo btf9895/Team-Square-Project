@@ -62,6 +62,8 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
                   if (currentField.getDataType() == 0) { //varchar
                      sb.append("(" + currentField.getVarcharValue() + ")"); //append varchar length in () if data type is varchar
                   }
+
+
                   if (currentField.getDisallowNull()) {
                      sb.append(" NOT NULL");
                   }
@@ -71,6 +73,7 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
                      } else { //any other data type
 
                         if( currentField.getDefaultValue().trim().length() > 1){
+                           
                             sb.append(" DEFAULT '" + currentField.getDefaultValue() + "'");
                         } else {
 
