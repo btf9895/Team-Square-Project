@@ -259,7 +259,7 @@ public class EdgeConvertFileParser {
          tempField.setIsPrimaryKey(Boolean.valueOf(stField.nextToken()).booleanValue());
          tempField.setDisallowNull(Boolean.valueOf(stField.nextToken()).booleanValue());
          if (stField.hasMoreTokens()) { //Default Value may not be defined
-            tempField.setDefaultValue( stField.nextToken().substring(13) );
+            tempField.setDefaultValue( stField.nextToken().substring(15) );
          }
          alFields.add(tempField);
       }
