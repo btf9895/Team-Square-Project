@@ -217,7 +217,7 @@ public class CreateDDLMySQLTest {
         CreateDDLMySQL ddl = new CreateDDLMySQL(tables, fields);
         String output = ddl.getSQLString("");
         assertTrue("Default value clause generated correctly",
-            output.contains("default_value_field") && output.contains("DEFAULT A default value"));
+            output.contains("default_value_field") && output.contains("DEFAULT 'A default value'"));
     }
 
     @Test
@@ -284,7 +284,7 @@ public class CreateDDLMySQLTest {
             output.contains("USE test_db") &&
             output.contains("CREATE TABLE table1") &&
             output.contains("t1_nn VARCHAR(1) NOT NULL") &&
-            output.contains("t1_dv VARCHAR(1) DEFAULT standard") &&
+            output.contains("t1_dv VARCHAR(1) DEFAULT 'standard'") &&
             output.contains("t1_longvarchar VARCHAR(33)") &&
             output.contains("CONSTRAINT table1_PK PRIMARY KEY (t1_pk)") &&
             output.contains("CREATE TABLE table2") &&
