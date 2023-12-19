@@ -71,9 +71,18 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
                      if (currentField.getDataType() == 1) { //boolean data type
                         sb.append(" DEFAULT " + convertStrBooleanToInt(currentField.getDefaultValue()));
                      } else { //any other data type
-                        sb.append(" DEFAULT " + currentField.getDefaultValue());
+                        if( currentField.getDefaultValue().trim().length() > 1){
+                           
+                            sb.append(" DEFAULT '" + currentField.getDefaultValue() + "'");
+                        } else {
+
+
+                        }
+                       
+                      
                      }
                   }
+
                   if (currentField.getIsPrimaryKey()) {
                      primaryKey[nativeFieldCount] = true;
                      numPrimaryKey++;
@@ -85,8 +94,14 @@ public class CreateDDLMySQL extends EdgeConvertCreateDDL {
                   }
                   if (nativeFieldCount < (nativeFields.length - 1)) {
                      sb.append(",\r\n"); //end of field
+
                   } else {
-                     sb.append("\r\n"); //end of field
+                     if(numForeignKey > 0 || numPrimaryKey > 0){
+                        sb.append(",\r\n"); //end of field
+                      } else {
+                        sb.append("\r\n"); //end of field
+                      }
+
                   }
                   logger.trace("Adding field: {}", sb);
                }
